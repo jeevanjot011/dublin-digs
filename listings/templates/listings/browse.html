@@ -1,0 +1,74 @@
+{% extends 'listings/base.html' %}
+{% block title %}Browse Listings - Dublin Digs{% endblock %}
+{% block content %}
+
+<h2 class="fw-bold mb-4 text-center text-success ">Available Listings</h2>
+
+{% if preferred_area %}
+  <p class="text-center">Showing suggestions for your preferred area: <strong>{{ preferred_area }}<div class="text-end">
+  <a href="/set-preferred-area/" class="btn btn-outline-success" style="margin-bottom: 2rem;">Change Preferred Area</a>
+  </div></strong></p>
+  <button id="suggest-btn" class="btn btn-outline-success" style="background-color: #f8f9fa; color: #3d4ea3ff; margin-bottom: 2rem;">Show Suggested Listings Only</button>
+{% else %}
+  <p class="text-center text-muted">
+    <a href="{% url 'set_preferred_area' %}">Set your preferred area</a> to get personalized suggestions.
+  </p>
+{% endif %}
+
+<div id="all-listings" class="row g-4">
+    {% for item in listings_with_distance %}
+        {% with l=item.listing %}
+        <div class="col-md-6 col-lg-4 listing-card {% if preferred_area and l.area_code == preferred_area %}suggested{% endif %}">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold text-success">{{ l.property_name }}</h5>
+                    <span class="badge bg-success mb-2">{{ l.area_code }}</span>
+                    <p class="card-text">💶 <strong>€{{ l.monthly_rent }}</strong> / month</p>
+                    <p class="card-text"><strong>📞</strong> +353 {{ l.contact_info }}</p>
+                    <p class="card-text text-muted">📍 {{ l.address }}</p>
+          
+                    {% if item.distance %}
+                        <p class="card-text text-info">Distance from preferred area: {{ item.distance }} km — {{ item.transport }}</p>
+                    {% endif %}
+                    
+                    <div class="d-flex gap-2 mt-2">
+                        <a href="{% url 'edit_listing' l.id %}" class="btn btn-outline-success btn-sm">Edit</a>
+                        <a href="{% url 'delete_listing' l.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
+                    </div>
+
+                    {% if l.area_code == preferred_area %}
+                        <span class="badge bg-info text-dark mt-2">Same as your preferred area 🎯</span>
+                    {% endif %}
+                    </div>
+                </div>
+                </div>
+        {% endwith %}
+    {% endfor %}
+
+</div>
+
+<script>
+const suggestBtn = document.getElementById('suggest-btn');
+if (suggestBtn) {
+    suggestBtn.onclick = function() {
+        const allCards = document.querySelectorAll('.listing-card');
+        let firstSuggested = null;
+
+        allCards.forEach(card => {
+            if (!card.classList.contains('suggested')) {
+                card.style.display = 'none';
+            } else {
+                card.style.display = 'block';
+                if (!firstSuggested) firstSuggested = card;
+            }
+        });
+
+        // Scroll to first suggested listing
+        if (firstSuggested) {
+            firstSuggested.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+}
+</script>
+
+{% endblock %}

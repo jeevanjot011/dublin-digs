@@ -1,0 +1,45 @@
+{% extends 'listings/base.html' %}
+{% block title %}Add Listing - Dublin Digs{% endblock %}
+{% block content %}
+
+<div class="card shadow-lg border-0">
+  <div class="card-body p-4">
+    <h3 class="fw-bold mb-3 text-success">
+      {% if edit_mode %}✏️ Edit Listing{% else %}➕ Add New Listing{% endif %}
+    </h3>
+
+    {% if not edit_mode %}
+      <p class="text-muted mb-4">
+        Found a place on WhatsApp or Facebook? Add it here to compare distances to your preferred area.
+      </p>
+    {% endif %}
+
+    <form method="POST" novalidate>
+      {% csrf_token %}
+      
+      {% for field in form %}
+        <div class="mb-3">
+          {{ field.label_tag }}
+          {{ field }}
+          {% if field.help_text %}
+            <div class="form-text">{{ field.help_text }}</div>
+          {% endif %}
+          {% for error in field.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+
+      <div class="mt-4">
+        {% if edit_mode %}
+          <button type="submit" class="btn btn-warning text-white fw-semibold">💾 Save Changes</button>
+          <a href="/" class="btn btn-outline-secondary ms-2">Cancel</a>
+        {% else %}
+          <button type="submit" class="btn btn-success fw-semibold">➕ Add Listing</button>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

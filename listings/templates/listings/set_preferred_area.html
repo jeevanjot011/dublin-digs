@@ -1,0 +1,15 @@
+{% extends 'listings/base.html' %}
+{% block title %}Set Preferred Area - Dublin Digs{% endblock %}
+
+{% block content %}
+<h2 class="text-center text-success mb-4">Set Your Preferred Area</h2>
+
+<form method="POST" class="mx-auto" style="max-width: 400px;">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="area" class="form-label">Preferred Area Code</label>
+        <input type="text" name="area" id="area" class="form-control" placeholder="e.g. D12" required>
+    </div>
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
+{% endblock %}
