@@ -4,7 +4,7 @@ from .models import Listing
 class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
-        fields = '__all__'
+        fields = ['property_name', 'area_code', 'monthly_rent', 'contact_info', 'address', 'description']
         widgets = {
             'property_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., Cozy Studio'}),
             'area_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., D8'}),
