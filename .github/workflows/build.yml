@@ -1,4 +1,6 @@
 name: Build & Test & Scan
+env:
+  DJANGO_SECRET_KEY: "test-secret"
 
 on:
   push:
