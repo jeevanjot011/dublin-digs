@@ -1,5 +1,9 @@
 name: Build & Test & Scan
 
+permissions:
+  issues: write
+  contents: read
+
 on:
   push:
     branches:
