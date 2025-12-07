@@ -56,11 +56,7 @@ jobs:
       with:
         projectBaseDir: .
         args: >
-          -Dsonar.organization=dublin-digs
-          -Dsonar.projectKey=dublin-digs
           -Dsonar.python.coverage.reportPaths=coverage.xml
-          -Dsonar.sources=.
-          -Dsonar.exclusions=**/migrations/**,**/static/**,**/tests/**
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: "https://sonarcloud.io"
