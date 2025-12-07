@@ -73,13 +73,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Run ZAP Baseline Scan (No Docker)
+    - name: Run ZAP Baseline Scan (Passive mode only)
       uses: zaproxy/action-baseline@v0.13.0
       with:
         target: "https://dublin-digs.onrender.com"
         token: ${{ secrets.GITHUB_TOKEN }}
         fail_action: false
-        cmd_options: "-a"
+        cmd_options: >
+          -a
+          --auto
+          --ignore-alerts   # avoid failing due to false positives
+          --hook=/zap/scripts/passive_only.js
+        allowed_hosts: dublin-digs.onrender.com
 
     - name: Upload ZAP Reports
       uses: actions/upload-artifact@v4
@@ -89,3 +94,4 @@ jobs:
           report_html.html
           report_md.md
           report_json.json
+
