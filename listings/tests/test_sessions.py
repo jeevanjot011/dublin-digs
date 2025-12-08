@@ -6,6 +6,7 @@ class PreferredAreaSessionTest(TestCase):
         self.client = Client()
 
     def test_set_preferred_area(self):
-        response = self.client.post(reverse('set_preferred_area'), {'area': 'D1'})
+        self.client.post(reverse('set_preferred_area'), {'area': 'D1'})
+
         session = self.client.session
         self.assertEqual(session.get('preferred_area'), 'D1')
